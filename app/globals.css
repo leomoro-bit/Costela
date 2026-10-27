@@ -1,0 +1,271 @@
+@import "tailwindcss";
+
+/*
+ * IDENTIDADE VISUAL — COSTELA SANTO ANTÔNIO
+ * -------------------------------------------
+ * As cores ficam em variáveis CSS (:root = claro, .dark = escuro) e viram
+ * classes do Tailwind pelo bloco @theme abaixo. Ex.: bg-marca, text-texto-2,
+ * border-borda, bg-superficie, bg-destaque, bg-cta, text-perigo...
+ *
+ * A MARCA DO CLIENTE (cor principal, cor de destaque, fonte, arredondamento, logo)
+ * é escolhida SEM CÓDIGO no painel ▸ Personalização (/painel/personalizacao) e aplicada
+ * pelo app/layout.tsx em todas as páginas — inclusive no cardápio público (/).
+ * Os valores de :root abaixo seguem a identidade Brasa: dourado, preto e carvão.
+ *
+ * Tons calculados sozinhos a partir da cor escolhida:
+ *   --marca-texto / --destaque-texto  branco ou preto, o que tiver mais contraste (WCAG)
+ *   --marca-forte / --destaque-forte  para TEXTO colorido (contraste nos 2 temas)
+ *   --marca-suave / --destaque-suave  fundos claros (selos, item ativo do menu)
+ *
+ * --cta (botões de ação do cardápio: Adicionar, Enviar pedido) = cor de DESTAQUE.
+ */
+
+/* Modo escuro por classe (.dark no <html>), controlado pelo botão de tema. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Cores da marca (padrão). O layout injeta as escolhidas pelo dono por cima. */
+:root {
+  --marca: #d5a23a; /* dourado */
+  --marca-texto: #0a0a0a; /* texto sobre o dourado */
+  --destaque: #d5a23a; /* dourado dos botões de ação do cardápio */
+  --destaque-texto: #0a0a0a; /* texto sobre o dourado */
+}
+
+/* Tema claro (.tema-claro força o claro dentro de um bloco — usado na prévia da Personalização) */
+:root,
+.tema-claro {
+  --fundo: #fbf6ee; /* creme quente */
+  --superficie: #ffffff;
+  --superficie-2: #f5eee2;
+  --borda: #e8dfcf;
+  --texto: #2a2419;
+  --texto-2: #6b5f4d;
+  --ok: #2f7a3b;
+  --ok-suave: #e3f3e5;
+  --alerta: #8a3505;
+  --alerta-suave: #fde9d9;
+  --perigo: #b42318;
+  --perigo-suave: #fbe4e1;
+  --info: #2f4f9c;
+  --info-suave: #e5ecfb;
+
+  /* --marca-mix / --destaque-mix: % calculada no servidor para garantir contraste */
+  --marca-forte: color-mix(in oklab, var(--marca) var(--marca-mix, 82%), black);
+  --marca-suave: color-mix(in oklab, var(--marca) 12%, var(--superficie));
+  --destaque-forte: color-mix(in oklab, var(--destaque) var(--destaque-mix, 55%), black);
+  --destaque-suave: color-mix(in oklab, var(--destaque) 16%, var(--superficie));
+  /* botões de ação do cardápio seguem a cor de destaque */
+  --cta: var(--destaque);
+  --cta-texto: var(--destaque-texto);
+  --cta-suave: var(--destaque-suave);
+  --foco: color-mix(in oklab, var(--cta) 70%, white);
+  --sombra: 0 1px 2px rgba(60, 40, 10, 0.06), 0 6px 20px rgba(60, 40, 10, 0.07);
+  color-scheme: light;
+}
+
+.dark {
+  --fundo: #080808;
+  --superficie: #141414;
+  --superficie-2: #202020;
+  --borda: #40331b;
+  --texto: #f7f1e6;
+  --texto-2: #b9ae9b;
+  --ok: #79cf83;
+  --ok-suave: #1f3322;
+  --alerta: #f0c56b;
+  --alerta-suave: #302516;
+  --perigo: #ff8a7a;
+  --perigo-suave: #351b18;
+  --info: #8fb0f5;
+  --info-suave: #19212b;
+
+  /* no escuro, "forte" = mais claro (contraste) */
+  --marca-forte: color-mix(in oklab, var(--marca) var(--marca-mix-escuro, 35%), white);
+  --marca-suave: color-mix(in oklab, var(--marca) 30%, var(--superficie));
+  --destaque-forte: color-mix(in oklab, var(--destaque) var(--destaque-mix-escuro, 60%), white);
+  --destaque-suave: color-mix(in oklab, var(--destaque) 22%, var(--superficie));
+  --cta: var(--destaque);
+  --cta-texto: var(--destaque-texto);
+  --cta-suave: var(--destaque-suave);
+  --foco: color-mix(in oklab, var(--cta) 70%, white);
+  --sombra: 0 2px 5px rgba(0, 0, 0, 0.45), 0 8px 26px rgba(0, 0, 0, 0.28);
+  color-scheme: dark;
+}
+
+/* FONTES: combinação escolhida na Personalização (atributo data-fonte no <html>).
+   As variáveis --ff-* vêm de app/fontes.ts (next/font). "app" = padrão do cardápio. */
+:root,
+[data-fonte="app"] {
+  --fonte-texto: var(--ff-dm-sans);
+  --fonte-titulo: var(--ff-fraunces);
+}
+[data-fonte="moderna"] {
+  --fonte-texto: var(--ff-inter);
+  --fonte-titulo: var(--ff-inter);
+}
+[data-fonte="elegante"] {
+  --fonte-texto: var(--ff-dm-sans);
+  --fonte-titulo: var(--ff-playfair);
+}
+[data-fonte="amigavel"] {
+  --fonte-texto: var(--ff-nunito);
+  --fonte-titulo: var(--ff-nunito);
+}
+[data-fonte="classica"] {
+  --fonte-texto: var(--ff-source-sans);
+  --fonte-titulo: var(--ff-lora);
+}
+[data-fonte="tecnica"] {
+  --fonte-texto: var(--ff-manrope);
+  --fonte-titulo: var(--ff-space-grotesk);
+}
+[data-fonte="divertida"] {
+  --fonte-texto: var(--ff-nunito);
+  --fonte-titulo: var(--ff-fredoka);
+}
+
+/* ARREDONDAMENTO (atributo data-raio no <html>): muda rounded-lg/xl/2xl do app inteiro. */
+[data-raio="medio"] {
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+}
+[data-raio="reto"] {
+  --radius-lg: 0.25rem;
+  --radius-xl: 0.3rem;
+  --radius-2xl: 0.4rem;
+}
+[data-raio="redondo"] {
+  --radius-lg: 0.75rem;
+  --radius-xl: 1.1rem;
+  --radius-2xl: 1.6rem;
+}
+
+@theme inline {
+  --color-marca: var(--marca);
+  --color-marca-forte: var(--marca-forte);
+  --color-marca-suave: var(--marca-suave);
+  --color-marca-texto: var(--marca-texto);
+  --color-destaque: var(--destaque);
+  --color-destaque-forte: var(--destaque-forte);
+  --color-destaque-suave: var(--destaque-suave);
+  --color-destaque-texto: var(--destaque-texto);
+  --color-cta: var(--cta);
+  --color-cta-texto: var(--cta-texto);
+  --color-cta-suave: var(--cta-suave);
+  --color-fundo: var(--fundo);
+  --color-superficie: var(--superficie);
+  --color-superficie-2: var(--superficie-2);
+  --color-borda: var(--borda);
+  --color-texto: var(--texto);
+  --color-texto-2: var(--texto-2);
+  --color-foco: var(--foco);
+  --color-ok: var(--ok);
+  --color-ok-suave: var(--ok-suave);
+  --color-alerta: var(--alerta);
+  --color-alerta-suave: var(--alerta-suave);
+  --color-perigo: var(--perigo);
+  --color-perigo-suave: var(--perigo-suave);
+  --color-info: var(--info);
+  --color-info-suave: var(--info-suave);
+
+  /* Fontes (classes font-sans e font-titulo) */
+  --font-sans: var(--fonte-texto), ui-sans-serif, system-ui, sans-serif;
+  --font-titulo: var(--fonte-titulo), var(--fonte-texto), ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    background: var(--fundo);
+    color: var(--texto);
+    font-family: var(--fonte-texto), ui-sans-serif, system-ui, sans-serif;
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--fonte-titulo), var(--fonte-texto), ui-sans-serif, system-ui, sans-serif;
+  }
+  :focus-visible {
+    outline: 2px solid var(--foco);
+    outline-offset: 2px;
+  }
+  /* Espaço para a barra inferior do iPhone */
+  .pb-seguro {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Animações do cardápio (modal subindo, barra da sacola, grupo obrigatório "tremendo") */
+@keyframes subir {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+}
+@keyframes tremer {
+  25% {
+    transform: translateX(-4px);
+  }
+  75% {
+    transform: translateX(4px);
+  }
+}
+.animar-subir {
+  animation: subir 0.25s ease-out;
+}
+.animar-tremer {
+  animation: tremer 0.35s;
+}
+.sombra-cartao {
+  box-shadow: var(--sombra);
+}
+.sem-barra::-webkit-scrollbar {
+  display: none;
+}
+.sem-barra {
+  scrollbar-width: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Impressão: esconde menus/botões marcados com .nao-imprimir e usa fundo branco. */
+@media print {
+  .nao-imprimir {
+    display: none !important;
+  }
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  /* Painel ▸ Pedidos ▸ "Imprimir": só a comanda escolhida sai no papel */
+  .imprimindo-um [data-pedido]:not(.imprimir-este) {
+    display: none !important;
+  }
+  .imprimir-este {
+    break-inside: avoid;
+    box-shadow: none !important;
+  }
+  .imprimir-sem-margem {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
+
+/* Acabamento Brasa: foco e controles com contorno dourado. */
+.dark input:focus,
+.dark select:focus,
+.dark textarea:focus {
+  border-color: var(--marca);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--marca) 20%, transparent);
+}
+.dark ::selection { background: color-mix(in oklab, var(--marca) 42%, black); color: #fff; }
