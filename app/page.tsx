@@ -13,6 +13,7 @@ import { EstadoVazio } from "@/components/ui/estado-vazio";
 import type { ConfigPublica, DadosCardapio, GrupoPub } from "@/lib/cardapio";
 import { obterMarca } from "@/lib/marca-servidor";
 import { createClient } from "@/lib/supabase/server";
+export const dynamic = 'force-dynamic';
 
 const CONFIG_PADRAO_PUBLICA: ConfigPublica = {
   whatsapp: null,
